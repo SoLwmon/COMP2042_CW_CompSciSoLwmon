@@ -1,20 +1,3 @@
-/*
- *  Brick Destroy - A simple Arcade video game
- *   Copyright (C) 2017  Filippo Ranza
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package test;
 
 import java.awt.*;
@@ -30,7 +13,7 @@ public class Wall {
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
 
-    private Random rnd;
+    private Random random;
     private Rectangle area;
 
     Brick[] bricks;
@@ -55,15 +38,15 @@ public class Wall {
         ballCount = 3;
         ballLost = false;
 
-        rnd = new Random();
+        random = new Random();
 
         makeBall(ballPos);
         int speedX,speedY;
         do{
-            speedX = rnd.nextInt(5) - 2;
+            speedX = random.nextInt(5) - 2;
         }while(speedX == 0);
         do{
-            speedY = -rnd.nextInt(3);
+            speedY = -random.nextInt(3);
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
@@ -110,7 +93,7 @@ public class Wall {
             double x = (brickOnLine * brickLen) - (brickLen / 2);
             p.setLocation(x,y);
             tmp[i] = new ClayBrick(p,brickSize);
-        }
+  }
         return tmp;
 
     }
@@ -245,10 +228,10 @@ public class Wall {
         ball.moveTo(startPoint);
         int speedX,speedY;
         do{
-            speedX = rnd.nextInt(5) - 2;
+            speedX = random.nextInt(5) - 2;
         }while(speedX == 0);
         do{
-            speedY = -rnd.nextInt(3);
+            speedY = -random.nextInt(3);
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
