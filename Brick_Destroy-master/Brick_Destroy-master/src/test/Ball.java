@@ -8,7 +8,7 @@ import java.awt.geom.RectangularShape;
  * Created by filippo on 04/09/16.
  *
  */
-abstract public class Ball {
+public abstract class Ball {
 
     private Shape ballFace;
 
