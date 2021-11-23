@@ -1,7 +1,6 @@
 package test;
 
 import java.awt.*;
-import java.awt.Point;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -69,38 +68,51 @@ abstract public class Brick  {
             Point impact = new Point((int)point.getX(),(int)point.getY());
             Point start = new Point();
             Point end = new Point();
-
+            Point tmp = new Point();
 
             switch(direction){
                 case LEFT:
-                    start.setLocation(bounds.x + bounds.width, bounds.y);
-                    end.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
-                    Point tmp = makeRandomPoint(start,end,VERTICAL);
-                    makeCrack(impact,tmp);
-
+                    moveLeft(bounds,impact,start,end,tmp);
                     break;
                 case RIGHT:
-                    start.setLocation(bounds.getLocation());
-                    end.setLocation(bounds.x, bounds.y + bounds.height);
-                    tmp = makeRandomPoint(start,end,VERTICAL);
-                    makeCrack(impact,tmp);
-
+                    moveRight(bounds,impact,start,end,tmp);
                     break;
                 case UP:
-                    start.setLocation(bounds.x, bounds.y + bounds.height);
-                    end.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
-                    tmp = makeRandomPoint(start,end,HORIZONTAL);
-                    makeCrack(impact,tmp);
+                    moveUp(bounds,impact,start,end,tmp);
                     break;
                 case DOWN:
-                    start.setLocation(bounds.getLocation());
-                    end.setLocation(bounds.x + bounds.width, bounds.y);
-                    tmp = makeRandomPoint(start,end,HORIZONTAL);
-                    makeCrack(impact,tmp);
-
+                    moveDown(bounds,impact,start,end,tmp);
                     break;
-
             }
+        }
+
+        public void moveLeft(Rectangle bounds,Point impact,Point start,Point end,Point tmp)
+        {
+            start.setLocation(bounds.x + bounds.width, bounds.y);
+            end.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
+            tmp = makeRandomPoint(start,end,VERTICAL);
+            makeCrack(impact,tmp);
+        }
+        public void moveRight(Rectangle bounds,Point impact,Point start,Point end,Point tmp)
+        {
+            start.setLocation(bounds.getLocation());
+            end.setLocation(bounds.x, bounds.y + bounds.height);
+            tmp = makeRandomPoint(start,end,VERTICAL);
+            makeCrack(impact,tmp);
+        }
+        public void moveUp(Rectangle bounds,Point impact,Point start,Point end,Point tmp)
+        {
+            start.setLocation(bounds.x, bounds.y + bounds.height);
+            end.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
+            tmp = makeRandomPoint(start,end,HORIZONTAL);
+            makeCrack(impact,tmp);
+        }
+        public void moveDown(Rectangle bounds,Point impact,Point start,Point end,Point tmp)
+        {
+            start.setLocation(bounds.getLocation());
+            end.setLocation(bounds.x + bounds.width, bounds.y);
+            tmp = makeRandomPoint(start,end,HORIZONTAL);
+            makeCrack(impact,tmp);
         }
 
         protected void makeCrack(Point start, Point end){
@@ -253,7 +265,6 @@ abstract public class Brick  {
 
 
 }
-
 
 
 
