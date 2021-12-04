@@ -9,7 +9,10 @@ import java.awt.geom.RectangularShape;
  *
  */
 public abstract class Ball {
-
+	private static final int TIMER_STATE_FIRE = 250;
+	public static final int STATE_NORMAL = 0;
+	public static final int STATE_FIRE = 1;
+	
     private Shape ballFace;
 
     private Point2D center;
@@ -24,7 +27,10 @@ public abstract class Ball {
 
     private int speedX;
     private int speedY;
-
+    
+    private int stateBall;
+    private int timer;
+    
     public Ball(Point2D center,int radiusA,int radiusB,Color inner,Color border){
         this.center = center;
 
@@ -49,7 +55,18 @@ public abstract class Ball {
 
     protected abstract Shape makeBall(Point2D center,int radiusA,int radiusB);
 
+    public void handleState() {
+    	if (stateBall==STATE_FIRE) {
+    		timer++;
+    		if (timer>=TIMER_STATE_FIRE) {
+    			timer=0;
+    			changeState(STATE_NORMAL);
+    		}
+    	}
+    }
+    
     public void move(){
+
         RectangularShape tmp = (RectangularShape) ballFace;
         center.setLocation((center.getX() + speedX),(center.getY() + speedY));
         double w = tmp.getWidth();
@@ -58,11 +75,11 @@ public abstract class Ball {
         tmp.setFrame((center.getX() -(w / 2)),(center.getY() - (h / 2)),w,h);
         setPoints(w,h);
 
-
         ballFace = tmp;
+        handleState();
     }
 
-    public void setSpeed(int x,int y){
+    public void setSpeed(int x, int y){
         speedX = x;
         speedY = y;
     }
@@ -91,6 +108,14 @@ public abstract class Ball {
         return inner;
     }
 
+    public void setBorderColor(Color c){
+        border = c;
+    }
+
+    public void setInnerColor(Color c){
+        inner = c;
+    }
+    
     public Point2D getPosition(){
         return center;
     }
@@ -99,6 +124,10 @@ public abstract class Ball {
         return ballFace;
     }
 
+    public int getState() {
+    	return stateBall;
+    }
+    
     public void moveTo(Point p){
         center.setLocation(p);
 
@@ -126,5 +155,24 @@ public abstract class Ball {
         return speedY;
     }
 
-
+    public abstract void changeColorState(int state);
+    
+    public void changeState(int state) {
+    	changeColorState(state);
+    	switch (state) {
+	    	case STATE_NORMAL :
+	    		speedX = speedX>0?Constants.SPEED:-Constants.SPEED;
+	    		speedY = speedY>0?Constants.SPEED:-Constants.SPEED;
+	    		break;
+	    	case STATE_FIRE :
+	    		speedX = speedX>0?Constants.SPEED_FAST:-Constants.SPEED_FAST;
+	    		speedY = speedY>0?Constants.SPEED_FAST:-Constants.SPEED_FAST;
+	    		break;
+    		default :
+    			break;
+    	}
+    	stateBall=state;
+    }
+    
 }
+
