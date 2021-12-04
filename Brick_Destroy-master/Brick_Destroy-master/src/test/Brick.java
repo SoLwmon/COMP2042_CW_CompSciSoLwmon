@@ -1,6 +1,7 @@
 package test;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -21,7 +22,7 @@ abstract public class Brick  {
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
 
-
+    public boolean containsPowerUp = false;
 
     public class Crack{
 
@@ -195,11 +196,15 @@ abstract public class Brick  {
     private Color inner;
 
     private int fullStrength;
-    private int strength;
+    int strength;
 
     private boolean broken;
 
-
+    private int x;
+    private int y;
+    private int w;
+    private int h;
+    
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
         rnd = new Random();
         broken = false;
@@ -208,7 +213,10 @@ abstract public class Brick  {
         this.border = border;
         this.inner = inner;
         this.fullStrength = this.strength = strength;
-
+        x=pos.x;
+        y=pos.y;
+        w=size.width;
+        h=size.height;
     }
 
     protected abstract Shape makeBrickFace(Point pos,Dimension size);
@@ -222,7 +230,17 @@ abstract public class Brick  {
 
     public abstract Shape getBrick();
 
-
+    public Shape getPowerUpEmplacement() {
+    	return new Ellipse2D.Float(x+w/2-h/4,y+h/4,h/2,h/2);
+    }
+    
+    public Shape getPowerUpEmplacement2() {
+    	return new Ellipse2D.Float(x+w/2-h/4+3,y+h/4+3,h/2-6,h/2-6);
+    }
+    
+    public Shape getPowerUpEmplacement3() {
+    	return new Ellipse2D.Float(x+w/2-h/4+5,y+h/4+5,h/2-10,h/2-10);
+    }
 
     public Color getBorderColor(){
         return  border;
@@ -262,7 +280,9 @@ abstract public class Brick  {
         broken = (strength == 0);
     }
 
-
+    public void setPowerUp() {
+    	this.containsPowerUp=true;
+    }
 
 }
 
