@@ -43,10 +43,10 @@ public class Wall {
         makeBall(ballPos);
         int speedX,speedY;
         do{
-            speedX = random.nextInt(5) - 2;
+            speedX = Constants.SPEED;
         }while(speedX == 0);
         do{
-            speedY = -random.nextInt(3);
+            speedY = -Constants.SPEED;
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
@@ -93,7 +93,10 @@ public class Wall {
             double x = (brickOnLine * brickLen) - (brickLen / 2);
             p.setLocation(x,y);
             tmp[i] = new ClayBrick(p,brickSize);
-  }
+        }
+        //We add the power-up to a brick in the middle
+        tmp[tmp.length/3+2].setPowerUp();
+        tmp[tmp.length/3*2-2].setPowerUp();
         return tmp;
 
     }
@@ -140,6 +143,9 @@ public class Wall {
             p.setLocation(x,y);
             tmp[i] = makeBrick(p,brickSize,typeA);
         }
+        //We add the power-up to a brick in the middle
+        tmp[tmp.length/3+2].setPowerUp();
+        tmp[tmp.length/3*2-2].setPowerUp();
         return tmp;
     }
 
@@ -188,19 +194,38 @@ public class Wall {
             switch(b.findImpact(ball)) {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
-                    ball.reverseY();
+                	if (ball.getState()==Ball.STATE_NORMAL||b.strength>1) {
+                        ball.reverseY();
+                        if (b.containsPowerUp) {
+                        	ball.changeState(Ball.STATE_FIRE);
+                        }
+                	}
+
                     return b.setImpact(ball.down, Brick.Crack.UP);
                 case Brick.DOWN_IMPACT:
-                    ball.reverseY();
+                	if (ball.getState()==Ball.STATE_NORMAL||b.strength>1) {
+	                    ball.reverseY();
+                        if (b.containsPowerUp) {
+                        	ball.changeState(Ball.STATE_FIRE);
+                        }
+                	}
                     return b.setImpact(ball.up,Brick.Crack.DOWN);
-
                 //Horizontal Impact
                 case Brick.LEFT_IMPACT:
-                    ball.reverseX();
-                    return b.setImpact(ball.right,Brick.Crack.RIGHT);
+
+	                    ball.reverseX();
+                        if (b.containsPowerUp) {
+                        	ball.changeState(Ball.STATE_FIRE);
+                        }
+	                    return b.setImpact(ball.right,Brick.Crack.RIGHT);
+                	
                 case Brick.RIGHT_IMPACT:
-                    ball.reverseX();
-                    return b.setImpact(ball.left,Brick.Crack.LEFT);
+	                    ball.reverseX();
+                        if (b.containsPowerUp) {
+                        	ball.changeState(Ball.STATE_FIRE);
+                        }
+	                    return b.setImpact(ball.left,Brick.Crack.LEFT);
+                	
             }
         }
         return false;
@@ -228,10 +253,10 @@ public class Wall {
         ball.moveTo(startPoint);
         int speedX,speedY;
         do{
-            speedX = random.nextInt(5) - 2;
+            speedX = Constants.SPEED;
         }while(speedX == 0);
         do{
-            speedY = -random.nextInt(3);
+            speedY = -Constants.SPEED;
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
