@@ -1,18 +1,24 @@
 package test;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.FontRenderContext;
+import java.io.File;
+import java.io.IOException;
 
 import static test.Constants.*;
 
 
 public class GameBoard extends JComponent implements KeyListener,MouseListener,MouseMotionListener {
 
-
-
-    private Timer gameTimer;
+	private boolean keyRightPressed;
+	private boolean keyLeftPressed;
+	
+	private GameFrame owner;
+	
+    public Timer gameTimer;
 
     private Wall wall;
 
@@ -25,53 +31,77 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Rectangle continueButtonRect;
     private Rectangle exitButtonRect;
     private Rectangle restartButtonRect;
+    private Rectangle messageRect;
+    private Rectangle messageRect2;
+    
     private int strLen;
 
     private DebugConsole debugConsole;
+    private Font buttonFont;
+    private Font titleFont;
+    private Font textFont;
 
-
-    public GameBoard(JFrame owner){
+    public GameBoard(GameFrame _owner){
         super();
 
         strLen = 0;
         showPauseMenu = false;
 
-
+        owner=_owner;
 
         menuFont = new Font("Monospaced",Font.PLAIN,TEXT_SIZE);
-
 
         this.initialize();
         message = "";
         wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2,new Point(300,430));
-
+        messageRect = new Rectangle(DEF_WIDTH/2,150,0,0);
+        messageRect2 = new Rectangle(DEF_WIDTH/2+50,150,0,0);
+        
         debugConsole = new DebugConsole(owner,wall,this);
         //initialize the first level
         wall.nextLevel();
-
+        try {
+			setFonts();
+		} catch (FontFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			
+			e1.printStackTrace();
+		}
         gameTimer = new Timer(10,e ->{
+        	if (keyLeftPressed==true) {
+        		wall.player.moveLeft();
+        	}
+        	else if (keyRightPressed==true) {
+        		wall.player.movRight();
+        	}
+        	else {
+        		wall.player.stop();
+        	}
             wall.move();
             wall.findImpacts();
-            message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
+            message = "Bricks :	" + wall.getBrickCount() + "\n Balls :" + wall.getBallCount();
             if(wall.isBallLost()){
                 if(wall.ballEnd()){
+                    endround(false);
                     wall.wallReset();
                     message = "Game over";
                 }
                 wall.ballReset();
-                gameTimer.stop();
             }
             else if(wall.isDone()){
                 if(wall.hasLevel()){
                     message = "Go to Next Level";
-                    gameTimer.stop();
+                    endround(true);
                     wall.ballReset();
                     wall.wallReset();
                     wall.nextLevel();
                 }
                 else{
                     message = "ALL WALLS DESTROYED";
-                    gameTimer.stop();
+                    endround(true);
                 }
             }
 
@@ -79,9 +109,21 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         });
 
     }
-
-
-
+    public void setFonts() throws FontFormatException, IOException
+    {
+        buttonFont = Font.createFont(Font.PLAIN, new File("Fonts\\zorque.regular.ttf")).deriveFont(20f);
+        titleFont = Font.createFont(Font.PLAIN, new File("Fonts\\zorque.regular.ttf")).deriveFont((int)(20*1.1));        
+        textFont = Font.createFont(Font.PLAIN, new File("Fonts\\inter_regular.otf")).deriveFont((int)(20*0.8));
+    }
+    
+    public void endround(boolean cas) {
+    	gameTimer.stop();
+    	owner.enableScoreBoardFromGameBoard(cas,wall.getBrickCount(), wall.getBallCount());
+    	keyLeftPressed=false;
+    	keyRightPressed=false;
+    	
+    }
+    
     private void initialize(){
         this.setPreferredSize(new Dimension(DEF_WIDTH,DEF_HEIGHT));
         this.setFocusable(true);
@@ -91,15 +133,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         this.addMouseMotionListener(this);
     }
 
-
     public void paint(Graphics g){
-
         Graphics2D g2d = (Graphics2D) g;
 
         clear(g2d);
-
-        g2d.setColor(Color.BLUE);
-        g2d.drawString(message,250,225);
 
         drawBall(wall.ball,g2d);
 
@@ -108,12 +145,48 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 drawBrick(b,g2d);
 
         drawPlayer(wall.player,g2d);
+        drawMessage(g2d);
+        
         if(showPauseMenu)
             drawMenu(g2d);
 
+        
         Toolkit.getDefaultToolkit().sync();
     }
-
+    
+	public static void drawHCenteredRightAlignMultiline(Graphics2D g, String text, Rectangle rect, Font font) {
+	    // Get the FontMetrics
+	    FontMetrics metrics = g.getFontMetrics(font);
+	    int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+	    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+	    int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent() + 3;
+	    // Set the font
+	    // Draw the String
+	    drawMultilineString(g,text, x, y, font);
+	}
+	
+	public static void drawMultilineString(Graphics2D g, String text, int x, int y, Font f) {
+		g.setFont(f);
+	    FontMetrics metrics = g.getFontMetrics(f);
+	    int lineHeight = metrics.getHeight();
+	    y+=metrics.getAscent();
+	    for (String line : text.split("\n")) {
+	    	g.drawString(line, x, y += lineHeight);
+	    }
+	        
+	}
+	
+    private void drawMessage(Graphics2D g2d) {
+    	g2d.setColor(Color.white);
+    	if (!message.equals(""))
+    	if (message.charAt(0)==('B')) {
+        	drawHCenteredRightAlignMultiline(g2d,message.trim(),messageRect2,buttonFont);
+    	}
+    	else {
+        	drawHCenteredRightAlignMultiline(g2d,message.trim(),messageRect,buttonFont);
+    	}
+   }
+    
     private void clear(Graphics2D g2d){
         Color tmp = g2d.getColor();
         g2d.setColor(BG_COLOR_Board);
@@ -130,7 +203,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.setColor(brick.getBorderColor());
         g2d.draw(brick.getBrick());
 
-
+        if (brick.containsPowerUp) {
+        	drawPowerUp(g2d,brick);
+        }
+        
         g2d.setColor(tmp);
     }
 
@@ -142,21 +218,32 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.setColor(ball.getInnerColor());
         g2d.fill(s);
 
+        g2d.setStroke(new BasicStroke(2));
         g2d.setColor(ball.getBorderColor());
         g2d.draw(s);
 
         g2d.setColor(tmp);
+    }
+    
+    private void drawPowerUp(Graphics2D g2d, Brick b) {
+    	g2d.setColor(Constants.COLOR_FIRE_1);
+    	g2d.fill(b.getPowerUpEmplacement());
+    	g2d.setColor(Constants.COLOR_FIRE_2);
+    	g2d.fill(b.getPowerUpEmplacement2());
+    	g2d.setColor(Constants.COLOR_FIRE_2);
+    	g2d.fill(b.getPowerUpEmplacement2());
     }
 
     private void drawPlayer(Player p,Graphics2D g2d){
         Color tmp = g2d.getColor();
 
         Shape s = p.getPlayerFace();
-        g2d.setColor(Player.INNER_COLOR);
+        g2d.setColor(Player.BORDER_COLOR);
         g2d.fill(s);
 
-        g2d.setColor(Player.BORDER_COLOR);
-        g2d.draw(s);
+        Shape s2 = p.getPlayerFaceInner();
+        g2d.setColor(Player.INNER_COLOR);
+        g2d.fill(s2);
 
         g2d.setColor(tmp);
     }
@@ -242,11 +329,12 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         switch(keyEvent.getKeyCode()){
+        
             case KeyEvent.VK_A:
-                wall.player.moveLeft();
+            	keyLeftPressed=true;
                 break;
             case KeyEvent.VK_D:
-                wall.player.movRight();
+            	keyRightPressed=true;
                 break;
             case KeyEvent.VK_ESCAPE:
                 showPauseMenu = !showPauseMenu;
@@ -270,7 +358,14 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        wall.player.stop();
+        switch(keyEvent.getKeyCode()){
+	        case KeyEvent.VK_A:
+	            keyLeftPressed=false;
+	            break;
+	        case KeyEvent.VK_D:
+	        	keyRightPressed=false;
+	            break;
+	    }
     }
 
     @Override
