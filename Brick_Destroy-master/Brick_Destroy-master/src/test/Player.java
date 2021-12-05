@@ -1,13 +1,14 @@
 package test;
 
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 
 public class Player {
 
 
-    public static final Color BORDER_COLOR = Color.GREEN.darker().darker();
-    public static final Color INNER_COLOR = Color.GREEN;
+    public static final Color BORDER_COLOR = new Color(0xcec9ca);
+    public static final Color INNER_COLOR = new Color(0xe7e3e4);
 
     private static final int DEF_MOVE_AMOUNT = 5;
 
@@ -57,9 +58,13 @@ public class Player {
     }
 
     public Shape getPlayerFace(){
-        return  playerFace;
+        return new RoundRectangle2D.Float(playerFace.x,playerFace.y,playerFace.width,playerFace.height,5,5);
     }
-
+    
+    public Shape getPlayerFaceInner(){
+        return new RoundRectangle2D.Float(playerFace.x+3,playerFace.y+3,playerFace.width-6,playerFace.height-6,5,5);
+    }
+    
     public void moveTo(Point p){
         ballPoint.setLocation(p);
         playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
