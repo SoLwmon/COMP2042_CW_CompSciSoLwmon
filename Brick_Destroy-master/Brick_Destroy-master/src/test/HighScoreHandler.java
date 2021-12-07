@@ -57,7 +57,7 @@ public class HighScoreHandler {
         try {
             fileWriter = new FileWriter(filename, true);
             bufWriter = new BufferedWriter(fileWriter);
-            //Insérer un saut de ligne
+            
             bufWriter.newLine();
             bufWriter.write(text);
             bufWriter.close();
