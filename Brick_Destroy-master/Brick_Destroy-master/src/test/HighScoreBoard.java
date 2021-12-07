@@ -90,7 +90,7 @@ public class HighScoreBoard extends JComponent implements MouseListener, MouseMo
     }
 
     public void addScore(int brick, int ball) {
-    	HighScoreHandler.saveScore(String.valueOf((31-brick)*20+ball*7), ball);
+    	HighScoreHandler.saveScore(String.valueOf((31-brick)*20), ball);
     }
     
     public void getScores() {
@@ -195,7 +195,7 @@ public class HighScoreBoard extends JComponent implements MouseListener, MouseMo
 	    FontMetrics metrics = g.getFontMetrics(font);
 	    // Determine the X coordinate for the text
 	    int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-	    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+	    // Determine the Y coordinate for the text 
 	    int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent() + 3;
 	    // Set the font
 	    g.setFont(font);
@@ -282,9 +282,11 @@ public class HighScoreBoard extends JComponent implements MouseListener, MouseMo
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
         if(menuButton.contains(p)){
+            Sound.playSound(0);
         	owner.enableGameBoardFromScoreBoard();
         }         
         else if(menu1Button.contains(p)) {
+            Sound.playSound(0);
             owner.enableMenuBoardFromHighScoreBoard();
         }
     }
@@ -369,3 +371,4 @@ public class HighScoreBoard extends JComponent implements MouseListener, MouseMo
 		
 	}
 }
+
