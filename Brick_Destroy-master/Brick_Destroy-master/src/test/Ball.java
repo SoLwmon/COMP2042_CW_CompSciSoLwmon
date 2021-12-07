@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -55,6 +55,9 @@ public abstract class Ball {
 
     protected abstract Shape makeBall(Point2D center,int radiusA,int radiusB);
 
+    /**
+     * hadle steps
+     */
     public void handleState() {
     	if (stateBall==STATE_FIRE) {
     		timer++;
@@ -64,7 +67,10 @@ public abstract class Ball {
     		}
     	}
     }
-    
+
+    /**
+     * move ball
+     */
     public void move(){
 
         RectangularShape tmp = (RectangularShape) ballFace;
@@ -79,6 +85,11 @@ public abstract class Ball {
         handleState();
     }
 
+    /**
+     * speed of ball
+     * @param x x speed
+     * @param y y speed
+     */
     public void setSpeed(int x, int y){
         speedX = x;
         speedY = y;
@@ -127,7 +138,11 @@ public abstract class Ball {
     public int getState() {
     	return stateBall;
     }
-    
+
+    /**
+     * move ball
+     * @param p point to move
+     */
     public void moveTo(Point p){
         center.setLocation(p);
 
@@ -156,17 +171,21 @@ public abstract class Ball {
     }
 
     public abstract void changeColorState(int state);
-    
+
+    /**
+     * state change
+     * @param state state to change
+     */
     public void changeState(int state) {
     	changeColorState(state);
     	switch (state) {
 	    	case STATE_NORMAL :
-	    		speedX = speedX>0?Constants.SPEED:-Constants.SPEED;
-	    		speedY = speedY>0?Constants.SPEED:-Constants.SPEED;
+	    		speedX = speedX>0? Constants.SPEED:-Constants.SPEED;
+	    		speedY = speedY>0? Constants.SPEED:-Constants.SPEED;
 	    		break;
 	    	case STATE_FIRE :
-	    		speedX = speedX>0?Constants.SPEED_FAST:-Constants.SPEED_FAST;
-	    		speedY = speedY>0?Constants.SPEED_FAST:-Constants.SPEED_FAST;
+	    		speedX = speedX>0? Constants.SPEED_FAST:-Constants.SPEED_FAST;
+	    		speedY = speedY>0? Constants.SPEED_FAST:-Constants.SPEED_FAST;
 	    		break;
     		default :
     			break;
@@ -175,3 +194,4 @@ public abstract class Ball {
     }
     
 }
+
