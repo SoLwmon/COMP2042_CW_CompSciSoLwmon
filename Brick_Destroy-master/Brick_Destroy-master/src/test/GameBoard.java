@@ -33,6 +33,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Rectangle restartButtonRect;
     private Rectangle messageRect;
     private Rectangle messageRect2;
+    private Rectangle scoreRect;
     
     private int strLen;
 
@@ -40,6 +41,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Font buttonFont;
     private Font titleFont;
     private Font textFont;
+    public static int initialNbrBal;
 
     public GameBoard(GameFrame _owner){
         super();
@@ -56,6 +58,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2,new Point(300,430));
         messageRect = new Rectangle(DEF_WIDTH/2,150,0,0);
         messageRect2 = new Rectangle(DEF_WIDTH/2+50,150,0,0);
+        scoreRect = new Rectangle(DEF_WIDTH-20,DEF_HEIGHT-20,0,0);
         
         debugConsole = new DebugConsole(owner,wall,this);
         //initialize the first level
@@ -146,7 +149,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         drawPlayer(wall.player,g2d);
         drawMessage(g2d);
-        
+        g.setColor(Color.white);
+        drawHRightAlignMultiline(g2d,"Score : " + String.valueOf((initialNbrBal-wall.getBrickCount())*20), scoreRect, buttonFont);
         if(showPauseMenu)
             drawMenu(g2d);
 
@@ -154,11 +158,22 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         Toolkit.getDefaultToolkit().sync();
     }
     
+	public static void drawHRightAlignMultiline(Graphics2D g, String text, Rectangle rect, Font font) {
+	    // Get the FontMetrics
+	    FontMetrics metrics = g.getFontMetrics(font);
+	    int x = rect.x + (rect.width - metrics.stringWidth(text));
+	    // Determine the Y coordinate for the text
+	    int y = rect.y - metrics.getHeight() - metrics.getAscent();
+	    // Set the font
+	    // Draw the String
+	    drawMultilineString(g,text, x, y, font);
+	}
+	
 	public static void drawHCenteredRightAlignMultiline(Graphics2D g, String text, Rectangle rect, Font font) {
 	    // Get the FontMetrics
 	    FontMetrics metrics = g.getFontMetrics(font);
 	    int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-	    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+	    // Determine the Y coordinate for the text
 	    int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent() + 3;
 	    // Set the font
 	    // Draw the String
@@ -195,19 +210,22 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     }
 
     private void drawBrick(Brick brick,Graphics2D g2d){
-        Color tmp = g2d.getColor();
+    	if (brick.collisionable) {
+            Color tmp = g2d.getColor();
 
-        g2d.setColor(brick.getInnerColor());
-        g2d.fill(brick.getBrick());
+            g2d.setColor(brick.getInnerColor());
+            g2d.fill(brick.getBrick());
 
-        g2d.setColor(brick.getBorderColor());
-        g2d.draw(brick.getBrick());
+            g2d.setColor(brick.getBorderColor());
+            g2d.draw(brick.getBrick());
 
-        if (brick.containsPowerUp) {
-        	drawPowerUp(g2d,brick);
-        }
-        
-        g2d.setColor(tmp);
+            if (brick.containsPowerUp) {
+            	drawPowerUp(g2d,brick);
+            }
+            
+            g2d.setColor(tmp);
+    	}
+
     }
 
     private void drawBall(Ball ball,Graphics2D g2d){
