@@ -227,6 +227,7 @@ public class InfoBoard extends JComponent implements MouseListener, MouseMotionL
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
         if(menuButton.contains(p)){
+            Sound.playSound(0);
         	owner.enableMenuBoardFromInfoBoard();
         }
     }
