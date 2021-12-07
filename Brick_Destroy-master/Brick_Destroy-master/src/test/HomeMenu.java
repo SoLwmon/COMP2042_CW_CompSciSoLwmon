@@ -266,16 +266,20 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
+
         if(startButton.contains(p)){
+            Sound.playSound(0);
             startClicked = true;
             repaint(startButton.x,startButton.y,startButton.width+1,startButton.height+1);
 
         }
         else if(menuButton.contains(p)){
+            Sound.playSound(0);
             menuClicked = true;
             repaint(menuButton.x,menuButton.y,menuButton.width+1,menuButton.height+1);
         }
         else if(infoButton.contains(p)) {
+            Sound.playSound(0);
             infoClicked = true;
             repaint();
         }
