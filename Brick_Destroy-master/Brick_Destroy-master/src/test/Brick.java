@@ -200,11 +200,13 @@ abstract public class Brick  {
 
     private boolean broken;
 
-    private int x;
-    private int y;
-    private int w;
-    private int h;
-    
+    public int x;
+    public int y;
+    public int w;
+    public int h;
+    public int line;
+    public int indexLine;
+    public boolean collisionable = true;
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
         rnd = new Random();
         broken = false;
