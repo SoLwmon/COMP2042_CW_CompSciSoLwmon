@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -61,3 +61,4 @@ public class CementBrick extends Brick {
         brickFace = super.brickFace;
     }
 }
+
