@@ -1,15 +1,4 @@
-package test;
-
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.RoundRectangle2D.Float;
-
-
-/**
- * Created by filippo on 04/09/16.
- *
- */
-public class ClayBrick extends Brick {
+ClayBrick extends Brick {
 	static final Color[] COLOR_INNER =  new Color[] {new Color(0xff0036),new Color(0xfd8317),new Color(0xe3c900), new Color(0x34c61d), new Color(0x4591da)};
 	static final Color[] COLOR_BORDER =  new Color[] {new Color(0xc00036),new Color(0xd86500),new Color(0xc8af00), new Color(0x26a812), new Color(0x2879c9)};
 	
