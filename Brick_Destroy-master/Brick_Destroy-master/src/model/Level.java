@@ -1,6 +1,7 @@
-package test;
+package model;
 
 import java.awt.*;
+import view.GameBoard;
 
 public class Level {
 
