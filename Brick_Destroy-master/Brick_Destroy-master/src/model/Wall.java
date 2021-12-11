@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -13,12 +13,12 @@ public class Wall {
     private boolean ballLost;
     private int point;
 
-    
+    public static final int SPEED = 4;
     private Random random;
     private Rectangle area;
 
-    Ball ball;
-    Player player;
+    public Ball ball;
+    public Player player;
 
 
     private Point startPoint;
@@ -34,10 +34,10 @@ public class Wall {
         makeBall(ballPos);
         int speedX,speedY;
         do{
-            speedX = Constants.SPEED;
+            speedX = SPEED;
         }while(speedX == 0);
         do{
-            speedY = -Constants.SPEED;
+            speedY = -SPEED;
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
@@ -160,10 +160,10 @@ public class Wall {
         ball.moveTo(startPoint);
         int speedX,speedY;
         do{
-            speedX = Constants.SPEED;
+            speedX = SPEED;
         }while(speedX == 0);
         do{
-            speedY = -Constants.SPEED;
+            speedY = -SPEED;
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
