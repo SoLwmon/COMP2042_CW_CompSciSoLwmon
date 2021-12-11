@@ -46,6 +46,43 @@ abstract public class Brick  {
 
         broken = false;
         this.name = name;
+Brick  {
+
+    public static final int MIN_CRACK = 1;
+    public static final int DEF_CRACK_DEPTH = 1;
+    public static final int DEF_STEPS = 35;
+
+
+    public static final int UP_IMPACT = 100;
+    public static final int DOWN_IMPACT = 200;
+    public static final int LEFT_IMPACT = 300;
+    public static final int RIGHT_IMPACT = 400;
+
+    public boolean containsPowerUp = false;
+
+
+    private String name;
+    Shape brickFace;
+
+    private Color border;
+    private Color inner;
+
+    private int fullStrength;
+    int strength;
+
+    private boolean broken;
+
+    public int x;
+    public int y;
+    public int w;
+    public int h;
+    public int line;
+    public int indexLine;
+    public boolean collisionable = true;
+    public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
+
+        broken = false;
+        this.name = name;
         brickFace = makeBrickFace(pos,size);
         this.border = border;
         this.inner = inner;
@@ -122,8 +159,5 @@ abstract public class Brick  {
     }
 
 }
-
-
-
 
 
