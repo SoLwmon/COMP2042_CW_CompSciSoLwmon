@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -7,8 +7,6 @@ import java.net.URL;
 
 @SuppressWarnings("deprecation")
 public class Sound {
-	static AudioClip bounce = Applet.newAudioClip(Sound.class.getResource("sound1.wav"));
-	static AudioClip bonus = Applet.newAudioClip(Sound.class.getResource("sound2.wav"));
 
 	public static void playSound(int num) {
 		if (num==0) {
