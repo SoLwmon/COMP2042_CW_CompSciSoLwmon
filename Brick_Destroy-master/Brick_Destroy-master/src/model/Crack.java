@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -155,48 +155,7 @@ public class Crack{
         }
         return out;
     }
-
-    /*
-    public static void setCrackSections(int CRACK_SECTIONS){
-        this.CRACK_SECTIONS = CRACK_SECTIONS;
-    }
-
-    public void setJumpProbability(double JUMP_PROBABILITY){
-        this.JUMP_PROBABILITY = JUMP_PROBABILITY;
-    }
-
-    public static void setLEFT(int LEFT){
-        Crack.LEFT = LEFT;
-    }
-
-    public static void setRIGHT(int RIGHT){
-        Crack.RIGHT = RIGHT;
-    }
-
-    public static void setUP(int UP){
-        Crack.UP = UP;
-    }
-
-    public static void setDOWN(int DOWN){
-        Crack.DOWN = DOWN;
-    }
-
-    public static void setVERTICAL(int VERTICAL){
-        Crack.VERTICAL = VERTICAL;
-    }
-
-    public static void setHORIZONTAL(int HORIZONTAL){
-        Crack.HORIZONTAL = HORIZONTAL;
-    }
-
-    public static int getCrackSections(){
-        return CRACK_SECTIONS;
-    }
-
-    public static double getJumpProbability(){
-        return JUMP_PROBABILITY;
-    }
-        */
+    
     /**
      * get method for left,
      * @return left cracking
