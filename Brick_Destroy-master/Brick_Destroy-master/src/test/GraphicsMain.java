@@ -18,6 +18,8 @@
 package test;
 
 import java.awt.*;
+import model.Resources;
+import view.GameFrame;
 
 
 public class GraphicsMain {
