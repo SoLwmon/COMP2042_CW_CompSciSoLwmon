@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package test;
+package model;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
@@ -66,7 +66,7 @@ public class Player {
         moveAmount = -DEF_MOVE_AMOUNT;
     }
 
-    public void movRight(){
+    public void moveRight(){
         moveAmount = DEF_MOVE_AMOUNT;
     }
 
